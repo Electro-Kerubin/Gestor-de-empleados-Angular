@@ -1,0 +1,1 @@
+- Para el error ERR_CONNECTION_REFUSED se utilizo la etiqueta @CrossOrigin("*") en el controlador.
