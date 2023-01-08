@@ -17,14 +17,14 @@ export class EmpleadoService {
   }
 
   public addEmpleados(empleado: Empleado): Observable<Empleado> {
-    return this.http.post<Empleado>(`${this.apiServerUrl}/empleado/add`, empleado);
+    return this.http.post<Empleado>(`${this.apiServerUrl}/empleado/agregar`, empleado);
   }
 
   public updateEmpleado(empleado: Empleado): Observable<Empleado> {
-    return this.http.put<Empleado>(`${this.apiServerUrl}/empleado/update`, empleado);
+    return this.http.put<Empleado>(`${this.apiServerUrl}/empleado/actualizar`, empleado);
   }
 
   public deleteEmpleado(empleadoId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiServerUrl}/empleado/delete/${empleadoId}`);
+    return this.http.delete<void>(`${this.apiServerUrl}/empleado/borrar/${empleadoId}`);
   }
 }

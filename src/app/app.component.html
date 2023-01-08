@@ -1,7 +1,7 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="main-navbar">
   <a class="navbar-brand" href="#">Manejo de empleados</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -10,12 +10,12 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link">Añadir Empleado <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="#" (click)="abrirModal(null, 'añadir')">Añadir Empleado <span class="sr-only">(current)</span></a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar Empleado</button>
+      <input class="form-control mr-sm-2" type="search" (ngModelChange)="buscarEmpleado(key.value)"
+       #key="ngModel" ngModel name="key" id="searchName" placeholder="Buscar" aria-label="Search" required>
     </form>
   </div>
 </nav>
@@ -59,30 +59,74 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <form #addForm="ngForm" (ngSubmit)="addEmpleado(addForm)">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" ngModel name="nombre" class="form-control" id="nombre" placeholder="nombre" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" ngModel name="email" class="form-control" id="email" placeholder="email" required>
+          </div>
+          <div class="form-group">
+            <label for="trabajo">Trabajo</label>
+            <input type="text" ngModel name="trabajo" class="form-control" id="trabajo" placeholder="trabajo" required>
+          </div>
+          <div class="form-group">
+            <label for="telefono">Telefono</label>
+            <input type="text" ngModel name="telefono" class="form-control" id="telefono" placeholder="+56 9" required>
+          </div>
+          <div class="form-group">
+            <label for="nombre">Imagen URL</label>
+            <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" placeholder="imageUrl" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="add-empleado-form" class="btn btn-secundary" data-dismiss="modal">Cerrar</button>
+            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Guardar cambios</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </div>
 
 <!-- editar empleado modal -->
-<div class="modal fade" id="editarEmpleadoModal" tabindex="-1" role="dialog" aria-labelledby="editarEmpleadoModalLabel" aria-hidden="true">
+<div class="modal fade" id="editarEmpleadoModal" tabindex="-1" role="dialog" aria-labelledby="añadirEmpleadoModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Empleado</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel" >Editar Empleado {{ editEmpleado?.nombre }}"</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <form #editForm="ngForm">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" ngModel="{{ editEmpleado?.nombre }}" name="nombre" class="form-control" id="nombre" placeholder="nombre" required>
+          </div>
+          <input type="hidden" ngModel="{{ editEmpleado?.id }}" name="id" class="form-control" id="id">
+          <input type="hidden" ngModel="{{ editEmpleado?.codEmpleado }}" name="codEmpleado" class="form-control" id="codEmpleado">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" ngModel="{{ editEmpleado?.email }}" name="email" class="form-control" id="email" placeholder="email" required>
+          </div>
+          <div class="form-group">
+            <label for="trabajo">Trabajo</label>
+            <input type="text" ngModel="{{ editEmpleado?.trabajo }}" name="trabajo" class="form-control" id="trabajo" placeholder="trabajo" required>
+          </div>
+          <div class="form-group">
+            <label for="telefono">Telefono</label>
+            <input type="text" ngModel="{{ editEmpleado?.telefono }}" name="telefono" class="form-control" id="telefono" placeholder="+56 9" required>
+          </div>
+          <div class="form-group">
+            <label for="nombre">Imagen URL</label>
+            <input type="text" ngModel="{{ editEmpleado?.imageUrl }}" name="imageUrl" class="form-control" id="imageUrl" placeholder="imageUrl" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="" class="btn btn-secundary" data-dismiss="modal">Cerrar</button>
+            <button (click)="updateEmpleado(editForm.value)" type="submit" class="btn btn-primary">Guardar cambios</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -97,11 +141,11 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <p>¿Seguro de querer eliminar el empleado {{ editEmpleado?.nombre }}?</p>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button (click)="deleteEmpleado(editEmpleado?.id)" class="btn btn-danger" data-dismiss="modal">Si</button>
+        </div>
       </div>
     </div>
   </div>
